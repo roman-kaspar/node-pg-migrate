@@ -114,15 +114,21 @@ const getRunMigrations = async (db: DBConnection, options: RunnerOption) => {
 }
 
 const getMigrationsToRun = (options: RunnerOption, runNames: string[], migrations: Migration[]): Migration[] => {
+  const { count } = options
   if (options.direction === 'down') {
     const downMigrations: Array<string | Migration> = runNames
       .filter((migrationName) => !options.file || options.file === migrationName)
       .map((migrationName) => migrations.find(({ name }) => name === migrationName) || migrationName)
-    const toRun = (
-      options.timestamp
-        ? downMigrations.filter((migration) => typeof migration === 'object' && migration.timestamp >= options.count)
-        : downMigrations.slice(-Math.abs(options.count === undefined ? 1 : options.count))
-    ).reverse()
+
+    let toRun = null
+    if (count === undefined) {
+      toRun = downMigrations.slice(-1)
+    } else {
+      toRun = options.timestamp
+        ? downMigrations.filter((migration) => typeof migration === 'object' && migration.timestamp >= count)
+        : downMigrations.slice(count)
+    }
+    toRun.reverse()
     const deletedMigrations = toRun.filter((migration): migration is string => typeof migration === 'string')
     if (deletedMigrations.length) {
       const deletedMigrationsStr = deletedMigrations.join(', ')
@@ -133,9 +139,15 @@ const getMigrationsToRun = (options: RunnerOption, runNames: string[], migration
   const upMigrations = migrations.filter(
     ({ name }) => runNames.indexOf(name) < 0 && (!options.file || options.file === name),
   )
-  return options.timestamp
-    ? upMigrations.filter(({ timestamp }) => timestamp <= options.count)
-    : upMigrations.slice(0, Math.abs(options.count === undefined ? Infinity : options.count))
+  let toRun = null
+  if (count === undefined) {
+    toRun = upMigrations
+  } else {
+    toRun = options.timestamp
+      ? upMigrations.filter(({ timestamp }) => timestamp <= count)
+      : upMigrations.slice(0, Math.abs(count))
+  }
+  return toRun
 }
 
 const checkOrder = (runNames: string[], migrations: Migration[]) => {

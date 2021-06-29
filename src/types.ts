@@ -205,7 +205,7 @@ export interface RunnerOptionConfig {
   dir: string
   checkOrder?: boolean
   direction: MigrationDirection
-  count: number
+  count?: number
   timestamp?: boolean
   ignorePattern?: string
   file?: string
