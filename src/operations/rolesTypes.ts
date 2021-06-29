@@ -17,7 +17,7 @@ export interface RoleOptions {
   admin?: string | string[]
 }
 
-type CreateRoleFn = (roleName: Name, roleOptions?: RoleOptions & IfExistsOption) => string | string[]
+type CreateRoleFn = (roleName: Name, roleOptions?: RoleOptions) => string | string[]
 export type CreateRole = CreateRoleFn & { reverse: CreateRoleFn }
 export type DropRole = (roleName: Name, options?: IfExistsOption) => string | string[]
 export type AlterRole = (roleName: Name, roleOptions: RoleOptions) => string | string[]
