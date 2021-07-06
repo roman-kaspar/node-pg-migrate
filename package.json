@@ -74,7 +74,7 @@
     "eslint-plugin-import": "2.23.4",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-security": "1.4.0",
-    "husky": "6.0.0",
+    "husky": "7.0.1",
     "json5": "2.2.0",
     "lint-staged": "10.5.4",
     "mocha": "8.4.0",
