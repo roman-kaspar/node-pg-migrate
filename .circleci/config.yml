@@ -187,7 +187,7 @@ jobs:
       - <<: *node-image
         environment:
           - DATABASE_URL=postgresql://root@localhost:26257/circle_test
-      - image: cockroachdb/cockroach:v20.2.10
+      - image: cockroachdb/cockroach:v20.2.13
         command: ['start-single-node', '--insecure', '--host=localhost']
     steps:
       - <<: *restore
@@ -200,7 +200,7 @@ jobs:
       - <<: *node-image
         environment:
           - DATABASE_URL=postgresql://root@localhost:26257/circle_test
-      - image: cockroachdb/cockroach:v21.1.1
+      - image: cockroachdb/cockroach:v21.1.5
         command: ['start-single-node', '--insecure', '--host=localhost']
     steps:
       - <<: *restore
